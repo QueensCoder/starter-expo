@@ -17,11 +17,14 @@ export default class App extends React.Component {
   }
 }
 
+//questions to answer
+//where is the item now
+//where is the item moving to?
+//which item is being moved
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    backgroundColor: '#fff'
   }
 });
