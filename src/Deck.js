@@ -22,20 +22,40 @@ export class Deck extends Component {
     this.state = { panResp, position }; //might need to use this.postion and this.panresp
   }
 
+  getCardStyle() {
+    const { position } = this.state;
+    const rotate = position.x.interpolate({
+      inputRange: [-500, 0, 500], //interpolate allows us to link two scales
+      //input is the user input , output is the result
+      //associated with the input
+      outputRange: ['-120deg', '0deg', '120deg']
+    });
+
+    return {
+      ...position.getLayout(), //need to spread or else this causes error
+      transform: [{ rotate }]
+      //tie position of a card and rotation property at the same time
+    };
+  }
+
   renderCards() {
-    return this.props.data.map(item => {
+    return this.props.data.map((item, i) => {
+      if (!i) {
+        return (
+          <Animated.View
+            key={item.id}
+            style={this.getCardStyle()} //now the layout is effected by the position
+            {...this.state.panResp.panHandlers}
+          >
+            {this.props.renderCard(item)}
+          </Animated.View>
+        );
+      }
       return this.props.renderCard(item);
     });
   }
   render() {
-    return (
-      <Animated.View
-        style={this.state.position.getLayout()} //now the layout is effected by the position
-        {...this.state.panResp.panHandlers}
-      >
-        {this.renderCards()}
-      </Animated.View>
-    );
+    return <View>{this.renderCards()}</View>;
   }
 }
 
