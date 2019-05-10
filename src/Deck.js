@@ -7,6 +7,12 @@ const SWIPE_TRESH = 0.25 * SCREEN_WIDTH;
 const SWIPE_OUT_DUR = 250;
 
 export class Deck extends Component {
+  static defaultProps = {
+    //deals with error of onswipe left and right being treated as undefined
+    onSwipeRight: () => {},
+    onSwipeLeft: () => {}
+  };
+
   constructor(props) {
     super(props);
 
@@ -57,6 +63,8 @@ export class Deck extends Component {
     const { onSwipeLeft, onSwipeRight, data } = this.props;
     const item = data[this.state.index];
     direction === 'right' ? onSwipeRight(item) : onSwipeLeft(item);
+    this.state.position.setValue({ x: 0, y: 0 }); //position should be seperate from state because it causes mutations
+    this.setState({ index: this.state.index + 1 });
   }
 
   //sets rotation for card
