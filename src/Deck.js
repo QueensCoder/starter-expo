@@ -88,7 +88,11 @@ export class Deck extends Component {
 
   renderCards() {
     return this.props.data.map((item, i) => {
-      if (!i) {
+      if (i < this.state.index) return null; //if the index is greater than than i remove the card
+
+      if (i === this.state.index) {
+        //if the card's index is the same as the decks index attach handlers
+
         return (
           <Animated.View
             key={item.id}
