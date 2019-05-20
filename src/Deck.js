@@ -87,28 +87,45 @@ export class Deck extends Component {
   }
 
   renderCards() {
-    return this.props.data.map((item, i) => {
-      if (i < this.state.index) return null; //if the index is greater than than i remove the card
+    if (this.state.index >= this.props.data.length) {
+      return this.props.renderNoMoreCards();
+    }
 
-      if (i === this.state.index) {
-        //if the card's index is the same as the decks index attach handlers
+    return this.props.data
+      .map((item, i) => {
+        if (i < this.state.index) return null; //if the index is greater than than i remove the card
 
+        if (i === this.state.index) {
+          //if the card's index is the same as the decks index attach handlers
+
+          return (
+            <Animated.View
+              key={item.id}
+              style={[this.getCardStyle(), styles.cardStyle]} //now the layout is effected by the position
+              {...this.state.panResp.panHandlers}
+            >
+              {this.props.renderCard(item)}
+            </Animated.View>
+          );
+        }
         return (
-          <Animated.View
-            key={item.id}
-            style={this.getCardStyle()} //now the layout is effected by the position
-            {...this.state.panResp.panHandlers}
-          >
+          <View key={item.id} style={styles.cardStyle}>
             {this.props.renderCard(item)}
-          </Animated.View>
+          </View>
         );
-      }
-      return this.props.renderCard(item);
-    });
+      })
+      .reverse(); //use reverse to change make array backwards
   }
   render() {
     return <View>{this.renderCards()}</View>;
   }
 }
+
+const styles = {
+  cardStyle: {
+    position: 'absolute',
+    width: SCREEN_WIDTH
+  }
+};
 
 export default Deck;

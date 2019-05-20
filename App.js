@@ -65,11 +65,21 @@ export default class App extends React.Component {
     );
   }
 
+  renderNoMoreCards() {
+    return (
+      <Card title="all done">
+        <Text style={{ marginBottom: 10 }}>There's no more cards</Text>
+        <Button title="Get more!" backgroundColor="#03A9F4" />
+      </Card>
+    );
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Deck
           data={DATA}
+          renderNoMoreCards={this.renderNoMoreCards}
           renderCard={this.renderCard}
           onSwipeRight={() => console.log('a swip occured')}
         />
